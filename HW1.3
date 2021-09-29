@@ -30,13 +30,8 @@ int main(void)
         if(comm[0] == 'c' && comm[1] == 'a' && comm[2] == 't'){
             pid = fork();
             if(pid == 0){
-                int count = 4;
-                int z = 0;
-                while(comm[count]!='\n'){
-                    arg[1][z++] = comm[count++];
-                }
                 arg[0] = "cat";
-                //arg[1] = "hi.txt";
+                arg[1] = "hi.txt";
                 arg[2] = NULL;
                 if(execvp("cat", arg)){
                     printf("file not found\n");
