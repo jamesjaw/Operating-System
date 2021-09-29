@@ -1,14 +1,17 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
-
+#include <string.h>
 #define MAX_LINE 80
 
 int main(void)
 {
     char arg[MAX_LINE/2+1]; /*command line arguments*/
     int should_run = 1; /*flag to determine when to exit program*/
-    char *argv[] = {"ls","-l",NULL};
+    char *argv1[] = {"cat",NULL};
+    char *argv2[] = {"ls",NULL};
+    char *argv3[] = {"date",NULL};
+    char *argv4[] = {"ps -f",NULL};
     while(should_run){
         printf("osh>");
         fflush(stdout);
@@ -21,35 +24,44 @@ int main(void)
         */
         
         read(0, arg, MAX_LINE);
-        
+        //printf("%s",arg);
         //if((char)arg[1] == 'e') return 0;
         //printf("%c",(char)arg[1]);
         
         if((char)arg[0] == 'c' && (char)arg[1] == 'a' && (char)arg[2] == 't'){
-        
-        }
-        else if((char)arg[0] == 'l' && (char)arg[1] == 's'){
             pid_t pid = fork();
             if(pid == 0){
-                execvp("ls", argv);
+                execvp("cat", argv1);
+            }
+            else if(pid > 0){
+                wait(NULL);
+            }
+        }
+        else if((char)arg[0] == 'l' && (char)arg[1] == 's'){
+            printf("ls\n");
+            pid_t pid = fork();
+            if(pid == 0){
+                execvp("ls", argv2);
             }
             else if(pid > 0){
                 wait(NULL);
             }
         }
         else if((char)arg[0] == 'd' && (char)arg[1] == 'a' && (char)arg[2] == 't' && (char)arg[3] == 'e'){
+            printf("date\n");
             pid_t pid = fork();
             if(pid == 0){
-                execvp("date", argv);
+                execvp("date", argv3);
             }
             else if(pid > 0){
                 wait(NULL);
             }
         }
         else if((char)arg[0] == 'p' && (char)arg[1] == 's' && (char)arg[2] == ' ' && (char)arg[3] == '-' && (char)arg[4] == 'f'){
+            printf("ps -f\n");
             pid_t pid = fork();
             if(pid == 0){
-                execvp("ps -f", argv);
+                execvp("ps -f", argv4);
             }
             else if(pid > 0){
                 wait(NULL);
@@ -62,6 +74,7 @@ int main(void)
         else{
             printf("command not support\n");
         }
+        
     }
 
     return 0;
