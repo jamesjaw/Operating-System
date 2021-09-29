@@ -6,12 +6,11 @@
 
 int main(void)
 {
-    char arg[MAX_LINE/2+1]; /*command line arguments*/
+    char *arg[MAX_LINE/2+1]; /*command line arguments*/
     int should_run = 1; /*flag to determine when to exit program*/
-    char *argv1[] = {"cat",NULL};
-    char *argv2[] = {"ls",NULL};
-    char *argv3[] = {"date",NULL};
-    char *argv4[] = {"ps -f",NULL};
+    
+    char comm[MAX_LINE];
+    pid_t pid;
     while(should_run){
         printf("osh>");
         fflush(stdout);
@@ -23,56 +22,63 @@ int main(void)
         * (2) the child process will invoke execvp()
         */
         
-        read(0, arg, MAX_LINE);
+        read(0, comm, MAX_LINE);
         //printf("%s",arg);
         //if((char)arg[1] == 'e') return 0;
         //printf("%c",(char)arg[1]);
         
-        if((char)arg[0] == 'c' && (char)arg[1] == 'a' && (char)arg[2] == 't'){
-            pid_t pid = fork();
+        if(comm[0] == 'c' && comm[1] == 'a' && comm[2] == 't'){
+            pid = fork();
             if(pid == 0){
-                execvp("cat", argv1);
+                arg[0] = "cat";
+                arg[1] = "hi.txt";
+                arg[2] = NULL;
+                execvp("cat", arg);
             }
             else if(pid > 0){
                 wait(NULL);
             }
         }
-        else if((char)arg[0] == 'l' && (char)arg[1] == 's'){
-            printf("ls\n");
-            pid_t pid = fork();
+        else if(comm[0] == 'l' && comm[1] == 's'){
+            pid = fork();
             if(pid == 0){
-                execvp("ls", argv2);
+                arg[0] = "ls";
+                arg[1] = NULL;
+                execvp("ls", arg);
             }
             else if(pid > 0){
                 wait(NULL);
             }
         }
-        else if((char)arg[0] == 'd' && (char)arg[1] == 'a' && (char)arg[2] == 't' && (char)arg[3] == 'e'){
+        else if(comm[0] == 'd' && comm[1] == 'a' && comm[2] == 't' && comm[3] == 'e'){
             printf("date\n");
-            pid_t pid = fork();
+            pid = fork();
             if(pid == 0){
-                execvp("date", argv3);
+                arg[0] = "date";
+                arg[1] = NULL;
+                execvp("date", arg);
             }
             else if(pid > 0){
                 wait(NULL);
             }
         }
-        else if((char)arg[0] == 'p' && (char)arg[1] == 's' && (char)arg[2] == ' ' && (char)arg[3] == '-' && (char)arg[4] == 'f'){
-            printf("ps -f\n");
-            pid_t pid = fork();
+        else if(comm[0] == 'p' && comm[1] == 's' && comm[2] == ' ' &&  comm[3] == '-' && comm[4] == 'f'){
+            pid = fork();
             if(pid == 0){
-                execvp("ps -f", argv4);
+                arg[0] = "ps -f";
+                arg[1] = NULL;
+                execvp("ps -f", arg);
             }
             else if(pid > 0){
                 wait(NULL);
             }
         }
-        else if((char)arg[0] == 'e' && (char)arg[1] == 'x' && (char)arg[2] == 'i' && (char)arg[3] == 't'){
+        else if(comm[0] == 'e' && comm[1] == 'x' && comm[2] == 'i' && comm[3] == 't'){
             //printf("exit\n");
             break;
         }
         else{
-            printf("command not support\n");
+            printf("command not supported\n");
         }
         
     }
