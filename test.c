@@ -23,23 +23,31 @@ int main(void)
         pid_t pid;
         read(0, com, MAX_LINE/2+1);
         arg[0] = strtok(com," ");
+        
         int count = 0;
         while(arg[count] != NULL){
             arg[++count] = strtok(NULL," ");
         }
-        if(!strcmp(com, "exit")){
-            printf("zzz\n");
+        
+        
+        if(strcmp(com,"exit\n") == 0){
             return 0;
         }
         else{
             pid = fork();
             if(pid == 0){
-                execvp(arg[0], arg);
+                /*
+                char* temp = NULL;
+                temp = strstr(arg[0], "\n");
+                *temp = '\0';
+                */
+                execvp("ls", arg);
             }
             else if(pid > 0){
                 wait(NULL);
             }
         }
+        
     }
     return 0;
 }
