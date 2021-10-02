@@ -41,7 +41,12 @@ int main(void)
                 temp = strstr(arg[0], "\n");
                 *temp = '\0';
                 */
-                execvp("ls", arg);
+                
+                char z[MAX_LINE];
+                strcpy(z, arg[0]);
+                z[strlen(z)-1] = '\0';
+                
+                execvp(z, arg);
             }
             else if(pid > 0){
                 wait(NULL);
