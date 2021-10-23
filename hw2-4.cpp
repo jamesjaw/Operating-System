@@ -1,9 +1,10 @@
 #include <iostream>
 #include <queue>
+#include <utility>
 #define pa pair<int,int>
 using namespace std;
 
-priority_queue<pa,vector<pa>,greater<pa>> ready2;
+priority_queue<pa,vector<pa>,greater<pa> > ready2;
 
 
 int main(){
@@ -14,6 +15,10 @@ int main(){
     int w[100];
     int t[100];
     int r[100];
+    for(int i=0;i<=100;i++){
+        a[i] = b[i] = w[i] = t[i] = r[i] = 0;
+    }
+
     for(int i=1;i<=pnum;i++){
         cin>>a[i];
     }
@@ -25,11 +30,11 @@ int main(){
     int count = 0;
     int time = 0;
     queue<int> ready;
-    
+
     time = a[1];
     ready.push(1);
     int next = 2;
-    
+
     while(count != pnum){
         if(ready.empty()){
             if(ready2.empty()){
@@ -40,7 +45,7 @@ int main(){
                 }
             }
             else{
-                auto pick = ready2.top();
+                pa pick = ready2.top();
                 ready2.pop();
                 int bust = pick.first;
                 int now = pick.second;
@@ -50,7 +55,7 @@ int main(){
                     if(next <= pnum && a[next] <= time){
                         ready.push(next);
                         next++;
-                        
+
                         pick.first -= i;
                         ready2.push(pick);
                         break;
@@ -64,7 +69,7 @@ int main(){
                     w[now] = t[now] - b[now];    //wating = turnover - bust
                     count++;
                 }
-                
+
             }
         }
         else{
@@ -105,6 +110,6 @@ int main(){
     }
     cout<<tow<<"\n";
     cout<<tot;
-    
+
     return 0;
 }
