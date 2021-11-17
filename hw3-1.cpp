@@ -5,13 +5,14 @@ using namespace std;
 
 int data[1000005];
 int countz = 0;
-int num = countz / 4;
-int lest = countz % 4;
+int num = 0;
+int lest = 0;
 
 void* bubble(int input){
     int amount = num;
-    int start = input * amount;
     if(input == 3) amount += lest;
+    int start = input * num;
+    
     for(int i=0;i<amount-1;i++){
         for(int j=0;j<amount-1-i;j++){
             if(data[start+j] > data[start+j+1]){
@@ -37,6 +38,8 @@ int main(){
     while(cin>>data[countz]){
         countz++;
     }
+    num = countz / 4;
+    lest = countz % 4;
     bubble(0);
     bubble(1);
     bubble(2);
