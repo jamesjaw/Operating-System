@@ -10,9 +10,11 @@ int num = 0;
 int lest = 0;
 
 void* bubble(int input){
-    int amount = num;
-    if(input == 3) amount += lest;
-    int start = input * num;
+    
+    int amount = countz / 4;
+    int start = input * amount;
+    if(input == 3) amount += (countz % 4);
+    
     
     for(int i=0;i<amount-1;i++){
         for(int j=0;j<amount-1-i;j++){
@@ -23,47 +25,48 @@ void* bubble(int input){
             }
         }
     }
+    /*
+    for(int i=0;i<amount;i++){
+        cout<<data[start + i]<<" ";
+    }
+    cout<<"\n";
+    */
     return NULL;
 }
 
-void* merge(int input, int por){
-    int amount = countz / por;
-    int start_L = amount * input;
-    int start_R = amount * (input+1);
-    int end_L = start_L + amount;
-    int end_R = start_R + amount;
-    if(input == por - 1) end_R += (countz % por);
-    
-    int start = start_L;
+void* merge(int str, int mid, int end){
     vector<int> temp;
+    int L = str;
+    int R = mid;
     while(1){
-        if(start_L == end_L){
-            while(start_R != end_R){
-                temp.push_back(data[start_R]);
-                start_R++;
+        if(L == mid){
+            while(R!=end){
+                temp.push_back(data[R]);
+                R++;
             }
             break;
         }
-        if(start_R == end_R){
-            while(start_L != end_L){
-                temp.push_back(data[start_L]);
-                start_L++;
+        if(R == end){
+            while(L!=mid){
+                temp.push_back(data[L]);
+                L++;
             }
             break;
         }
-        if(data[start_L] < data[start_R]){
-            temp.push_back(data[start_L]);
-            start_L++;
+        if(data[L]<data[R]){
+            temp.push_back(data[L]);
+            L++;
         }
         else{
-            temp.push_back(data[start_R]);
-            start_R++;
+            temp.push_back(data[R]);
+            R++;
         }
     }
-    for(int i:temp){
-        data[start] = i;
-        start++;
+    for(int i=0;i<temp.size();i++){
+        //cout<<temp[i]<<" ";
+        data[str + i] = temp[i];
     }
+    //cout<<"\n";
     return NULL;
 }
 
@@ -75,18 +78,23 @@ int main(){
     while(cin>>data[countz]){
         countz++;
     }
-    
-    num = countz / 4;
-    lest = countz % 4;
+    //cout<<"countz = "<<countz<<"\n";
     bubble(0);
     bubble(1);
     bubble(2);
     bubble(3);
     
-    merge(0, 4);
-    merge(2, 4);
-    merge(0, 2);
- 
+    int len = countz/4;
+    int a = len*0;
+    int b = len*1;
+    int c = len*2;
+    int d = len*3;
+    merge(a, b, c);
+    merge(c, d, countz);
+    
+    b = c;
+    merge(a, b, countz);
+    
     for(int i=0;i<countz;i++) cout<<data[i]<<" ";
     return 0;
 }
