@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <pthread.h>
-
+#include <string>
 using namespace std;
 
-char* Q;
+string Q;
 int p_num;
 int lenth;
 
@@ -34,11 +34,7 @@ int main(){
     //p_num = 3;
     cin>>p_num;
     cin>>lenth;
-    Q = new char[lenth+1];
-    
-    for(int i=0;i<lenth;i++){
-        cin>>Q[i];
-    }
+    cin>>Q;
     
     pthread_t pid[4];
     
@@ -53,6 +49,5 @@ int main(){
         cout<<i<<" "<<countz[i]<<"\n";
     }
     
-    delete [] Q;
     return 0;
 }
