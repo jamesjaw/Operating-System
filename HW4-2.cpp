@@ -6,7 +6,7 @@ using namespace std;
 
 int thr_num;
 int point_num;
-int countz = 0;
+long long countz = 0;
 
 default_random_engine generatort;
 uniform_real_distribution<double> distribution(0.0, 1.0);
@@ -41,6 +41,7 @@ int main(){
         pthread_join(pid[i], NULL);
     }
     double pi = 4.0 * countz / point_num;
-    cout<<pi<<"\n";
+    cout<<"get: "<<countz<<"\n";
+    cout<<"Pi: "<<pi<<"\n";
     return 0;
 }
