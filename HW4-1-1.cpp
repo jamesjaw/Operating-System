@@ -11,15 +11,17 @@ pthread_mutex_t m3 = PTHREAD_MUTEX_INITIALIZER;
 string Q;
 int p_num;
 int lenth;
+int amount;
+
+struct pra{
+    int start;
+};
+
 
 long long countz[3];
 void* clu(void* input){
-    int amount = lenth / p_num;
-    
-    long start = (long)input * amount;
-    //if((long)input == p_num - 1) amount += lenth % p_num;
-    
-    for(long i=start;i<amount;i++){
+    pra* s = (pra*)input;
+    for(long i=s->start;i<s->start + amount;i++){
         if(Q[i] == '0'){
             pthread_mutex_lock(&m1);
             countz[0]++;
@@ -45,11 +47,13 @@ int main(){
     cin>>p_num;
     cin>>lenth;
     cin>>Q;
-    
+    amount = lenth / p_num;
+    cout<<amount<<"\n";
     pthread_t pid[4];
-    
+    pra arg[4];
     for(int i=0;i<p_num;i++){
-        pthread_create(&pid[i], NULL, clu, (void*)i);
+        arg[i].start = i * amount;
+        pthread_create(&pid[i], NULL, clu, &arg[i]);
     }
     for(int i=0;i<p_num;i++){
         pthread_join(pid[i], NULL);
