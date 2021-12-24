@@ -2,6 +2,7 @@
 #include <vector>
 #include <pthread.h>
 #include <string>
+#include <semaphore.h>
 using namespace std;
 
 pthread_mutex_t mut = PTHREAD_MUTEX_INITIALIZER;
@@ -9,7 +10,15 @@ pthread_mutex_t m1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t m2 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t m3 = PTHREAD_MUTEX_INITIALIZER;
 
-//pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t c1 = PTHREAD_COND_INITIALIZER;
+pthread_cond_t c2 = PTHREAD_COND_INITIALIZER;
+pthread_cond_t c3 = PTHREAD_COND_INITIALIZER;
+
+sem_t sem1_1;
+sem_t sem1_2;
+sem_t sem2;
+sem_t sem3;
 
 string Q;
 int p_num;
@@ -18,7 +27,7 @@ int amount;
 
 struct pra{
     int start;
-    pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+    //pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 };
 
 
@@ -43,18 +52,42 @@ void* clu(void* input){
         }
     }
     int i = s->start / amount;
-    
-    if(i!=0){
-        
-        //pthread_cond_wait(&(s->cond))
+    if(i==0){
+        sem_wait(&sem1_1);
+        sem_wait(&sem1_2);
+        cout<<i<<": "<<countz[i]<<"\n";
+        sem_post(&sem1_1);
+        sem_post(&sem1_2);
+        sem_post(&sem2);
     }
-    cout<<i<<": "<<countz[i]<<"\n";
-    
+    else if(i==1){
+        sem_post(&sem1_1);
+        sem_wait(&sem2);
+        cout<<i<<": "<<countz[i]<<"\n";
+        sem_post(&sem2);
+        sem_post(&sem3);
+    }
+    else if(i==2){
+        sem_post(&sem1_2);
+        sem_wait(&sem3);
+        cout<<i<<": "<<countz[i]<<"\n";
+        sem_post(&sem3);
+    }
     pthread_exit(0);
     return NULL;
 }
 
 int main(){
+    sem_init(&sem1_1,0,1);
+    sem_init(&sem1_2,0,1);
+    sem_init(&sem2,0,1);
+    sem_init(&sem3,0,1);
+    
+    sem_wait(&sem1_1);
+    sem_wait(&sem1_2);
+    sem_wait(&sem2);
+    sem_wait(&sem3);
+    
     p_num = 3;
     //cin>>p_num;
     cin>>lenth;
