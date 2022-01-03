@@ -1,24 +1,23 @@
 #include <iostream>
 #include <vector>
 #include <pthread.h>
-#include <random>
+#include <cstdlib>
 using namespace std;
 
 int thr_num;
 int point_num;
 long long countz = 0;
 
-default_random_engine generatort;
-uniform_real_distribution<double> distribution(0.0, 1.0);
 pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
 void* mtcl_pi(void* input){
     
     int num = point_num / thr_num;
     double x,y;
     for(int i=0;i<num;i++){
-        x = distribution(generatort);
+        // forget turn to double = =
+        x = (double)rand()/RAND_MAX;
         //cout<<x<<" ";
-        y = distribution(generatort);
+        y = (double)rand()/RAND_MAX;
         //cout<<y<<" ";
         if((x*x + y*y) < 1){
             pthread_mutex_lock(&m);
