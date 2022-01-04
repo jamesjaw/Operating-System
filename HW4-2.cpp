@@ -34,7 +34,7 @@ int main(){
     pthread_t pid[5];
     
     for(int i=0;i<thr_num;i++){
-        pthread_create(&pid[i], NULL, mtcl_pi, (void*)i);
+        pthread_create(&pid[i], NULL, mtcl_pi, (void*)0);
     }
     for(int i=0;i<thr_num;i++){
         pthread_join(pid[i], NULL);
